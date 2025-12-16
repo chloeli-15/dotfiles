@@ -11,11 +11,15 @@ setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed
 setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
 setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
 setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
+setopt SHARE_HISTORY              # Share history between all sessions (important for autosuggestions)
+setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
+setopt HIST_SAVE_BY_COPY         # Write to history file immediately, not on exit.
 setopt completealiases
 setopt always_to_end
 setopt list_ambiguous
 export HISTSIZE=100000 # big big history
 export HISTFILESIZE=100000 # big big history
+export HISTFILE=~/.zsh_history   # Explicit history file location
 unsetopt hup
 unsetopt list_beep
 skip_global_compinit=1

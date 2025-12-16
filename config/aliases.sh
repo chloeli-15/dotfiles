@@ -172,6 +172,8 @@ alias sv="source .venv/bin/activate"
 alias de="deactivate"
 alias ma="micromamba activate"
 alias md="micromamba deactivate"
+alias axolotl="source /workspace-vast/chloel/venvs/venv_axolotl/bin/activate"
+alias safety_tooling="source /workspace-vast/chloel/venvs/venv_safety_tooling/bin/activate"
 
 # -------------------------------------------------------------------
 # Slurm
