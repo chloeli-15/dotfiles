@@ -86,7 +86,7 @@ if [ $machine == "Linux" ]; then
     fi
 # Installing on mac with homebrew
 elif [ $machine == "Mac" ]; then
-    yes | brew install coreutils ncdu htop ncdu rsync btop jq  # Mac won't have realpath before coreutils installed
+    yes | brew install coreutils rsync || true  # Mac won't have realpath before coreutils installed
     curl -LsSf https://astral.sh/uv/install.sh | sh
 
     if [ $extras == true ]; then
@@ -99,8 +99,8 @@ elif [ $machine == "Mac" ]; then
     fi
 
     DOT_DIR=$(dirname $(realpath $0))
-    [ $zsh == true ] && yes | brew install zsh
-    [ $tmux == true ] && yes | brew install tmux
+    [ $zsh == true ] && yes | brew install zsh || true
+    [ $tmux == true ] && yes | brew install tmux || true
     defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
     defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
     defaults write -g com.apple.mouse.scaling 5.0
