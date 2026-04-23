@@ -31,23 +31,27 @@ while (( "$#" )); do
 done
 
 echo "deploying on machine..."
-echo "using extra aliases: ${ALIASES[@]}"
+#echo "using extra aliases: ${ALIASES[@]}"
+
+append_once() {
+    local line="$1" target="$2"
+    grep -qxF "$line" "$target" 2>/dev/null || echo "$line" >> "$target"
+}
 
 # Tmux setup
-echo "source $DOT_DIR/config/tmux.conf" > $HOME/.tmux.conf
+append_once "source $DOT_DIR/config/tmux.conf" "$HOME/.tmux.conf"
 
 # Vimrc
 if [[ $VIM == "true" ]]; then
     echo "deploying .vimrc"
-    echo "source $DOT_DIR/config/vimrc" > $HOME/.vimrc
+    append_once "source $DOT_DIR/config/vimrc" "$HOME/.vimrc"
 fi
 
 # zshrc setup
-echo "source $DOT_DIR/config/zshrc.sh" > $HOME/.zshrc
-# Append additional alias scripts if specified
+append_once "source $DOT_DIR/config/zshrc.sh" "$HOME/.zshrc"
 if [ -n "${ALIASES+x}" ]; then
     for alias in "${ALIASES[@]}"; do
-        echo "source $DOT_DIR/config/aliases_${alias}.sh" >> $HOME/.zshrc
+        append_once "source $DOT_DIR/config/aliases_${alias}.sh" "$HOME/.zshrc"
     done
 fi
 
