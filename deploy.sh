@@ -51,7 +51,10 @@ if [ -n "${ALIASES+x}" ]; then
     done
 fi
 
-echo "changing default shell to zsh"
-chsh -s $(which zsh)
+if chsh -s $(which zsh) 2>/dev/null; then
+    echo "default shell set to zsh"
+else
+    echo "could not set default shell (no password?); run 'zsh' to use your dotfiles"
+fi
 
-zsh
+echo "Run 'zsh' to start using your dotfiles"

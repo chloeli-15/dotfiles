@@ -14,6 +14,7 @@ ZSH=$HOME/.oh-my-zsh
 plugins=(zsh-autosuggestions zsh-syntax-highlighting zsh-completions zsh-history-substring-search)
 
 source $ZSH/oh-my-zsh.sh 2>/dev/null
+unalias cp 2>/dev/null  # oh-my-zsh sets cp='cp -i' which breaks non-interactive scripts
 
 # Configure zsh-autosuggestions
 # Accept suggestions with right arrow key
@@ -135,6 +136,10 @@ if [ -d "$FNM_PATH" ]; then
   export PATH="$FNM_PATH:$PATH"
   eval "`fnm env`"
 fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 if command -v ask-sh &> /dev/null; then
   export ASK_SH_OPENAI_API_KEY=$(cat $HOME/.openai_api_key)
