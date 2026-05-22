@@ -61,7 +61,7 @@ if [ $machine == "Linux" ]; then
     fi
     
     if [ $extras == true ]; then
-        sudo apt-get install -y ripgrep
+        sudo apt-get install -y ripgrep bat fd-find
 
         if [ -x ~/.linuxbrew/bin/brew ]; then
             echo "Homebrew already installed, skipping..."
@@ -73,11 +73,11 @@ if [ $machine == "Linux" ]; then
         fi
 
         eval "$(~/.linuxbrew/bin/brew shellenv)"
-        
-        brew install dust jless
+
+        brew install dust jless eza
 
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-        . "$HOME/.cargo/env" 
+        . "$HOME/.cargo/env"
         cargo install code2prompt
         brew install peco
 
@@ -90,10 +90,10 @@ elif [ $machine == "Mac" ]; then
     curl -LsSf https://astral.sh/uv/install.sh | sh
 
     if [ $extras == true ]; then
-        yes | brew install ripgrep dust jless
+        yes | brew install ripgrep dust jless bat fd eza
 
         yes | curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-        . "$HOME/.cargo/env" 
+        . "$HOME/.cargo/env"
         yes | cargo install code2prompt
         yes | brew install peco
     fi

@@ -14,8 +14,8 @@ setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
 setopt completealiases
 setopt always_to_end
 setopt list_ambiguous
-export HISTSIZE=100000 # big big history
-export HISTFILESIZE=100000 # big big history
+export HISTSIZE=100000000 # unlimited history
+export HISTFILESIZE=100000000 # unlimited history
 unsetopt hup
 unsetopt list_beep
 skip_global_compinit=1
