@@ -1,6 +1,24 @@
 # dotfiles
 ZSH, Tmux, Vim and ssh setup on both local/remote machines.
 
+## Quick start on a fresh machine
+
+```bash
+git clone git@github.com:chloeli-15/dotfiles.git
+cd dotfiles
+./install.sh --zsh --tmux --extras   # oh-my-zsh, powerlevel10k, plugins, CLI tools
+./deploy.sh --aliases=speechmatics   # wires ~/.tmux.conf and ~/.zshrc to source this repo
+```
+
+`install.sh` clones oh-my-zsh + the powerlevel10k theme + plugins (autosuggestions,
+syntax-highlighting, completions, history-substring-search); `deploy.sh` appends
+`source` lines to `~/.tmux.conf` and `~/.zshrc` so they pull config straight from this
+repo (so editing files here updates your live shell). Drop `--extras` to skip the heavier
+CLI tools, and adjust/omit `--aliases=...` as needed. See the detailed steps below.
+
+> Remotes: `origin` is this fork (`chloeli-15/dotfiles`, SSH) — `git push` goes here.
+> `upstream` (`jplhughes/dotfiles`) is the original; pull from it to sync.
+
 ## Installation
 
 ### Step 1
