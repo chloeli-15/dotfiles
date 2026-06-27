@@ -8,6 +8,7 @@ git clone git@github.com:chloeli-15/dotfiles.git
 cd dotfiles
 ./install.sh --zsh --tmux --extras   # oh-my-zsh, powerlevel10k, plugins, CLI tools
 ./deploy.sh --aliases=speechmatics   # wires ~/.tmux.conf and ~/.zshrc to source this repo
+./claude/install.sh                  # (optional) phone push when a Claude Code session needs you
 ```
 
 `install.sh` clones oh-my-zsh + the powerlevel10k theme + plugins (autosuggestions,
@@ -66,6 +67,53 @@ Apply changes to ~/.zshrc?
 * Any new plugins or environment setup, add them to the [config/zshrc.sh](./config/zshrc.sh) script.
 * Any aliases you need, add them to the [config/aliases.sh](./config/aliases.sh) script. Try adding your own alias to the bottom of the file. For example, try setting `cd1` to your most used git repo so you can just type `cd1` to get to it.
 * Any setup you do in a new RunPod, add it to [runpod/runpod_setup.sh](./runpod/runpod_setup.sh).
+
+## Claude Code push notifications (`claude/`)
+
+Phone push (via [ntfy.sh](https://ntfy.sh)) when a Claude Code session needs you. See
+[`claude/README.md`](./claude/README.md) for details. Setup per node:
+
+```bash
+./claude/install.sh [ntfy-topic]     # default topic: talkie-chloel-0d10764a8
+```
+
+This symlinks `~/.claude/hooks/ntfy_notify.py` → this repo and merges two hooks into
+`~/.claude/settings.json` (preserving your other settings):
+- **PreToolUse / AskUserQuestion** — reliable ping whenever the agent asks you a question (body =
+  the question text). The dependable "needs your input" signal.
+- **Notification** — permission prompts (the idle "waiting for your input" message is filtered out).
+
+Plus an on-demand `notify` command (in `custom_bins/`, on PATH) the agent uses when it's stuck:
+`notify "<message>" "<title>"`. Topic override: `CLAUDE_NTFY_TOPIC`.
+
+Notes:
+- `~/.claude` is **per-node-local**, so run `./claude/install.sh` once on each node you launch
+  `claude` from, then subscribe to the topic in the ntfy phone/web app.
+- After install, the **current** session needs `/hooks` (reload) or a restart to pick up the new
+  hooks; new sessions get them automatically.
+- Needs `python3` + outbound HTTPS to ntfy.sh. Re-running `install.sh` is safe (idempotent) and
+  updates the topic.
+
+## Making changes & pushing to master
+
+`master` is the default branch (what a fresh machine clones), and `origin` is your fork
+(`chloeli-15/dotfiles`, SSH). Most config is **live via symlinks/`source`** — editing a file here
+updates your shell immediately (and the Claude hook script too), so committing is just to persist
+and share across machines.
+
+```bash
+# edit files in this repo, then:
+git add <files>                                  # or: git add -A
+git commit -m "describe the change"
+git push origin master                           # publish so other nodes can `git pull`
+```
+
+On another node, pull the latest and re-run the relevant installer if hooks/scripts changed:
+
+```bash
+git -C <dotfiles> pull origin master
+./claude/install.sh                              # only if claude/ changed
+```
 
 ## Docker image for runpod
 
