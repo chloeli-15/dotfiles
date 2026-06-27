@@ -1,0 +1,12 @@
+#!/bin/bash
+# Send a phone push to your ntfy topic (the one your phone is subscribed to).
+# Claude (or you) can call this from any session/node to message you on demand.
+#   notify "training finished"                 # title defaults to "<cwd> · Claude"
+#   notify "need your call on the S=48k rung" "talkie · decision"
+# Topic via CLAUDE_NTFY_TOPIC (default below). Needs outbound HTTPS to ntfy.sh.
+set -euo pipefail
+TOPIC="${CLAUDE_NTFY_TOPIC:-talkie-chloel-0d10764a8}"
+MSG="${1:?usage: notify <message> [title]}"
+TITLE="${2:-$(basename "$PWD") · Claude}"
+curl -s -H "Title: $TITLE" -H "Tags: speech_balloon" -d "$MSG" "https://ntfy.sh/$TOPIC" >/dev/null \
+  && echo "notified: $TITLE — $MSG"
